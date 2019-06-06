@@ -206,6 +206,48 @@ a:focus {
 }
 
 
+.chat-names{ 
+	text-align: center;
+	font-size: 200%;
+}
+
+.this-chat {
+  border: 2px solid #dedede;
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+.dark {
+  border-color: #ccc;
+  background-color: #ddd;
+}
+
+.this-chat::after {
+	content: "";
+	clear: both;
+	display: table;
+}
+
+.this-message{
+	float:left;
+	width: 100%;
+	margin-right: 20px;
+	border-radius: 50%;
+}
+
+.this-author-left{
+  float: left;
+  color: #999;
+}
+
+.this-author-right{
+  float: right;
+  color: #999;
+}
+
+
 
 
 
