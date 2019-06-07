@@ -15,7 +15,8 @@
         <ul class="navlist">
           <li class="navitem navlink active"><a href="./index.html">Home</a></li>
           <li class="navitem navlink"><a href="./login.html">Login</a></li>
-          <li class = "navitem navlink"><a href="./chatter.html">Create</a></li>
+		  <li class= "navitem navlink"> <button type="button" id="create-chat-button"><p>Create</p></button> </li>
+		  
         </ul>
       </nav>
 	  
@@ -147,5 +148,37 @@
 	</main>
 	
 	</main>
+	
+	    <div id="modal-backdrop" class="hidden"></div>
+	    <div id="create-chat-modal" class="hidden">
+      <div class="modal-dialog">
+
+        <div class="modal-header">
+          <h3>Create a Chatroom</h3>
+          <button type="button" class="modal-close-button">&times;</button>
+        </div>
+
+        <div class="modal-body">
+          <div class="chat-input-element">
+            <label for="chat-text-input">Chat Name</label>
+            <textarea id="chat-text-input"></textarea>
+          </div>
+          <div class="chat-input-element">
+            <label for="chat-attribution-input">Alias</label>
+            <input type="text" id="chat-attribution-input">
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="modal-cancel-button">Cancel</button>
+          <button type="button" class="modal-accept-button">Create chatroom</button>
+        </div>
+
+      </div>
+    </div>
+	</div>
+	
+	
+	
 	</body>
 </html>
