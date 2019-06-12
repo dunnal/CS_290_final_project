@@ -17,18 +17,19 @@ var db = null;
 
 var app = express();
 var port = process.env.PORT || 3000;
+app.use(express.static('public'));
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 app.use(bodyParser.json());
-app.use(express.static('public'));
 
 //context variables:
 //homepage: trending, an array of objects with members name and author; homechats, an array of objects with members name and author
 //convo: chatName, a string; messages, an array of objects with members message, author.
 
-app.get('/:id', function(req,res){
+app.get('/users/:id/', function(req,res){
   var collection = db.collection('chatterBoxRooms');
-  collection.find({members: {$in: req.params.id} }).toArray(function(err,coll){
+  collection.find({members:req.params.id}).toArray(function(err,coll){
+    console.log(coll);
     if (err) {
       res.status(500).send({
         error: "Error getting rooms from database"
@@ -42,7 +43,7 @@ app.get('/:id', function(req,res){
   });
 });
 
-app.post('/:id/addChat', function(req,res){
+app.post('/users/:id/addChat', function(req,res){
   var person = req.params.id.toLowerCase();
   if (req.body && req.body.url && req.body.caption) {
     var collection = db.collection('chatterBoxRooms');
@@ -58,7 +59,7 @@ app.post('/:id/addChat', function(req,res){
       function (err, result) {
         if (err) {
           res.status(500).send({
-            error: "Error inserting photo into DB"
+            error: "Error creating new room in DB"
           });
         }
       }
@@ -68,14 +69,19 @@ app.post('/:id/addChat', function(req,res){
   }
 });
 
-app.get('/:id/chat/:room', function(req,res){
+app.get('/users/:id/chat/:room', function(req,res){
   var collection = db.collection('chatterBoxRooms');
-  collection.find({id: req.params.room}).toArray(function(err,coll){
+  collection.find({chatName: req.params.room}).toArray(function(err,coll){
+    console.log(coll);
     if (err) {
       res.status(500).send({
         error: "Error getting rooms from database"
       });
-    } else if(!coll[0].members.includes(:id)){
+    } else if(coll.length === 0){
+      res.status(404).send({
+        error: "Was not able to find any rooms!"
+      })
+    } else if(!coll[0].members.includes(req.params.id)){
       res.status(200).send({
         error: "Unable to access that room: User isn't allowed!"
       });
@@ -88,7 +94,7 @@ app.get('/:id/chat/:room', function(req,res){
   });
 });
 
-app.post('/:id/chat/:room/addChat', function(req,res){
+app.post('/users/:id/chat/:room/addChat', function(req,res){
   var person = req.params.id.toLowerCase();
   var room = req.params.room.toLowerCase();
   if (req.body && req.body.url && req.body.caption) {
@@ -103,7 +109,7 @@ app.post('/:id/chat/:room/addChat', function(req,res){
       function (err, result) {
         if (err) {
           res.status(500).send({
-            error: "Error inserting photo into DB"
+            error: "Error inserting photo into the DB"
           });
         } else {
           console.log("== update result:", result);
@@ -126,6 +132,7 @@ app.get('*', function(req,res){
 
 MongoClient.connect(mongoUrl, function (err, client) {
   if (err) {
+    console.log(mongoUrl);
     throw err;
   }
   db = client.db(mongoDBName);

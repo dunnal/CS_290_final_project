@@ -37,7 +37,7 @@ createchat.addEventListener('click',function(){
 	}
 
   var request = new XMLHttpRequest();
-  var url = '/' + window.location.pathname.split('/')[1] + '/addChat';
+  var url = '/users/' + window.location.pathname.split('/')[1] + '/addChat';
   request.open('POST', url);
 
   request.addEventListener('load', function (event) {
@@ -69,7 +69,8 @@ minicreatechat.addEventListener('click',function(){
 	}
 
   var request = new XMLHttpRequest();
-  var url = '/' + window.location.pathname.split('/')[1] + '/chat/' + window.location.pathname.split('/')[3] + '/addChat';
+  var url = '/users/' + window.location.pathname.split('/')[1] + '/chat/' + window.location.pathname.split('/')[3] + '/addChat';
+  console.log(url);
   request.open('POST', url);
 
   request.addEventListener('load', function (event) {
