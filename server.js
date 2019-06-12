@@ -17,16 +17,22 @@ var db = null;
 
 var app = express();
 var port = process.env.PORT || 3000;
-app.use(express.static('public'));
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 app.use(bodyParser.json());
+app.use(express.static('public'));
 
 //context variables:
 //homepage: trending, an array of objects with members name and author; homechats, an array of objects with members name and author
 //convo: chatName, a string; messages, an array of objects with members message, author.
 
-app.get('/users/:id/', function(req,res){
+app.get('/', function(req,res){
+  console.log("Yup.");
+  res.status(200).render('homepage');
+});
+
+
+app.get('/users/:id', function(req,res){
   var collection = db.collection('chatterBoxRooms');
   collection.find({members:req.params.id}).toArray(function(err,coll){
     console.log(coll);
@@ -44,15 +50,15 @@ app.get('/users/:id/', function(req,res){
 });
 
 app.post('/users/:id/addChat', function(req,res){
-  var person = req.params.id.toLowerCase();
-  if (req.body && req.body.url && req.body.caption) {
+  var person = req.params.id;
+  if (req.body && req.body.name && req.body.author) {
     var collection = db.collection('chatterBoxRooms');
     var chat = {
       name: req.body.name,
       author: req.body.author
     };
     collection.insertOne({
-      id: req.body.name,
+      chatName: req.body.name,
       messages: [{message: "Enjoy your new room!", author: "Chatterbot"}],
       members: [person, req.body.author]
     },
@@ -94,29 +100,32 @@ app.get('/users/:id/chat/:room', function(req,res){
   });
 });
 
+//this one doesn't seem to work, probably just don't know what the second thing for the callback function does. shrug.
 app.post('/users/:id/chat/:room/addChat', function(req,res){
-  var person = req.params.id.toLowerCase();
-  var room = req.params.room.toLowerCase();
-  if (req.body && req.body.url && req.body.caption) {
+  var person = req.params.id;
+  var room = req.params.room;
+  if (req.body && req.body.name && req.body.author) {
     var collection = db.collection('chatterBoxRooms');
     var photo = {
       message: req.body.url,
       author: person
     };
     collection.updateOne(
-      { id: room },
+      { chatName: room },
       { $push: { messages: {message: req.body.content, author: person} } },
-      function (err, result) {
+      function (err, coll) {
         if (err) {
           res.status(500).send({
             error: "Error inserting photo into the DB"
           });
         } else {
-          console.log("== update result:", result);
-          if (result.matchedCount > 0) {
+          if (coll.matchedCount > 0) {
             res.status(200).send("Success");
           } else {
-            next();
+            res.status(200).render('convo', {
+              chatName: req.params.room,
+              messages: coll.toArray()[0].messages
+            });
           }
         }
       }

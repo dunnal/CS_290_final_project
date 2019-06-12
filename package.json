@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "prestart": "npm run build",
-    "build": "handlebars views/partials/*.handlebars -f public/partials.js && handlebars views/*.handlebars -f public/main.js && handlebars views/layouts/*.handlebars -f public/layouts.js",
+    "build": "handlebars views/partials/ad.handlebars views/partials/chat.handlebars views/partials/chatbutton.handlebars views/partials/createbutton.handlebars views/partials/header.handlebars views/partials/homechat.handlebars views/layouts/main.handlebars views/404.handlebars views/convo.handlebars views/homepage.handlebars views/login.handlebars -f public/handlebars.js",
     "test": "nodemon server.js",
     "start": "node server.js"
   },
@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/dunnal/CS_290_final_project#readme",
   "dependencies": {
-    "express": "^4.17.0",
+    "express": "^4.17.1",
     "express-handlebars": "^3.1.0",
     "handlebars": "^4.1.2",
     "mongodb": "^3.2.7",
