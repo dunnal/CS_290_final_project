@@ -1,0 +1,18 @@
+{{>header}}
+
+<main class="chatter-container">
+<div class="chat-names">
+  <h2>{{chatName}}</h2>
+</div>
+
+<main class="chat-container">
+
+{{#each messages}}
+  {{> chat}}
+{{/each}}
+
+</main>
+
+</main>
+
+{{>chatbutton}}

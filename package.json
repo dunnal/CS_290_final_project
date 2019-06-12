@@ -4,7 +4,9 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "prestart": "npm run build",
+    "build": "handlebars views/partials/*.handlebars -f public/partials.js && handlebars views/*.handlebars -f public/main.js && handlebars views/layouts/*.handlebars -f public/layouts.js",
+    "test": "nodemon server.js",
     "start": "node server.js"
   },
   "repository": {
