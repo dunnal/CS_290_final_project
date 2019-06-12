@@ -1,0 +1,29 @@
+{{>header}}
+
+<main class="mcontainer">
+
+  <main class="rcontainer">
+    <div class="ads">
+      <p>Trending</p>
+    </div>
+
+    <main class="inner">
+
+      {{#each trending}}
+        {{> ad}}
+      {{/each}}
+
+    </main>
+  </main>
+
+  <main class="container">
+
+    {{#each homechats}}
+      {{> homechat}}
+    {{/each}}
+
+  </main>
+
+</main>
+
+{{> createbutton}}
